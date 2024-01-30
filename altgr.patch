@@ -1,0 +1,49 @@
+diff --git a/docs/swhkd-keys.5.scd b/docs/swhkd-keys.5.scd
+index a5e0370..df457fb 100644
+--- a/docs/swhkd-keys.5.scd
++++ b/docs/swhkd-keys.5.scd
+@@ -11,6 +11,8 @@ swhkd	- Hotkey daemon inspired by sxhkd written in rust
+ 	- Super
+ 	- Mod4
+ 	- Alt
++   - Altgr
++	- Mod5
+ 	- Mod1
+ 	- Shift
+
+diff --git a/swhkd/src/daemon.rs b/swhkd/src/daemon.rs
+index a30d927..4030a58 100644
+--- a/swhkd/src/daemon.rs
++++ b/swhkd/src/daemon.rs
+@@ -177,7 +177,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
+         (Key::KEY_LEFTMETA, config::Modifier::Super),
+         (Key::KEY_RIGHTMETA, config::Modifier::Super),
+         (Key::KEY_LEFTALT, config::Modifier::Alt),
+-        (Key::KEY_RIGHTALT, config::Modifier::Alt),
++        (Key::KEY_RIGHTALT, config::Modifier::Altgr),
+         (Key::KEY_LEFTCTRL, config::Modifier::Control),
+         (Key::KEY_RIGHTCTRL, config::Modifier::Control),
+         (Key::KEY_LEFTSHIFT, config::Modifier::Shift),
+
+diff --git a/swhkd/src/config.rs b/swhkd/src/config.rs
+index 15ee1d0..b4f8b81 100644
+--- a/swhkd/src/config.rs
++++ b/swhkd/src/config.rs
+@@ -226,6 +226,7 @@ pub struct Hotkey {
+ pub enum Modifier {
+     Super,
+     Alt,
++    Altgr,
+     Control,
+     Shift,
+     Any,
+@@ -443,6 +444,8 @@ pub fn parse_contents(path: PathBuf, contents: String) -> Result<Vec<Mode>, Erro
+         ("mod4", Modifier::Super),
+         ("alt", Modifier::Alt),
+         ("mod1", Modifier::Alt),
++        ("altgr", Modifier::Altgr),
++        ("mod5", Modifier::Altgr),
+         ("shift", Modifier::Shift),
+         ("any", Modifier::Any),
+     ]);
+
